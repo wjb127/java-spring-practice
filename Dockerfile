@@ -51,7 +51,7 @@ if [ -n "$DATABASE_URL" ]; then\n\
   echo "   - URL: $DB_URL"\n\
   echo "   - User: $DB_USERNAME"\n\
 else\n\
-  echo "📦 로컬 MySQL 설정 사용"\n\
+  echo "📦 로컬 PostgreSQL 설정 사용"\n\
 fi\n\
 \n\
 # Java 실행\n\

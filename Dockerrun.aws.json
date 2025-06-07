@@ -3,59 +3,68 @@
   "containerDefinitions": [
     {
       "name": "spring-app",
-      "image": "spring-mybatis-app",
+      "image": "wjb127/spring-mybatis-postgres-app:latest",
       "essential": true,
       "memory": 512,
       "portMappings": [
         {
-          "hostPort": 8080,
-          "containerPort": 8080,
-          "protocol": "tcp"
+          "hostPort": 80,
+          "containerPort": 8080
         }
       ],
-      "links": ["mysql"],
+      "links": ["postgres"],
       "environment": [
         {
           "name": "DB_HOST",
-          "value": "mysql"
+          "value": "postgres"
         },
         {
           "name": "DB_PORT", 
-          "value": "3306"
+          "value": "5432"
         },
         {
           "name": "DB_NAME",
           "value": "demo_db"
+        },
+        {
+          "name": "DB_USERNAME",
+          "value": "postgres"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "value": "postgres_password"
         }
       ]
     },
     {
-      "name": "mysql",
-      "image": "mysql:8.0",
+      "name": "postgres",
+      "image": "postgres:15",
       "essential": true,
-      "memory": 512,
+      "memory": 256,
       "environment": [
         {
-          "name": "MYSQL_ROOT_PASSWORD",
-          "value": "1234"
+          "name": "POSTGRES_PASSWORD",
+          "value": "postgres_password"
         },
         {
-          "name": "MYSQL_DATABASE",
+          "name": "POSTGRES_DB", 
           "value": "demo_db"
         }
       ],
       "mountPoints": [
         {
-          "sourceVolume": "mysql-data",
-          "containerPath": "/var/lib/mysql"
+          "sourceVolume": "postgres-data",
+          "containerPath": "/var/lib/postgresql/data"
         }
       ]
     }
   ],
   "volumes": [
     {
-      "name": "mysql-data",
-      "host": {}
+      "name": "postgres-data",
+      "host": {
+        "sourcePath": "/var/lib/postgres-data"
+      }
     }
   ]
 } 

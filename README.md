@@ -1,4 +1,4 @@
-# Spring MVC + MyBatis + MySQL 사용자 관리 시스템
+# Spring MVC + MyBatis + PostgreSQL 사용자 관리 시스템
 
 Java Spring Framework를 사용한 웹 기반 사용자 관리 시스템입니다. REST API와 JSP 기반 웹 인터페이스를 모두 제공합니다.
 
@@ -24,7 +24,7 @@ Java Spring Framework를 사용한 웹 기반 사용자 관리 시스템입니�
 - **Java 17**
 - **Spring Framework 5.3.29** (Spring MVC)
 - **MyBatis 3.5.13** (SQL 매퍼)
-- **MySQL 8.0** (데이터베이스)
+- **PostgreSQL** (데이터베이스)
 - **HikariCP** (커넥션 풀)
 - **JSP + JSTL** (뷰 템플릿)
 - **Bootstrap 5** (UI 프레임워크)
@@ -35,7 +35,7 @@ Java Spring Framework를 사용한 웹 기반 사용자 관리 시스템입니�
 
 - Java 17 이상
 - Maven 3.6 이상
-- MySQL 8.0 이상
+- PostgreSQL 12 이상
 
 ## 🔧 설치 및 실행
 
@@ -59,7 +59,7 @@ docker-compose up --build
 - **애플리케이션**: http://localhost:8080
 - **사용자 관리**: http://localhost:8080/users  
 - **REST API**: http://localhost:8080/api/users
-- **MySQL**: localhost:3307 (root/1234)
+- **PostgreSQL**: localhost:5432 (postgres/password)
 
 **Docker 명령어:**
 ```bash
@@ -81,17 +81,17 @@ git clone https://github.com/wjb127/java-spring-practice.git
 cd java-spring-practice
 ```
 
-### 2. MySQL 설정
+### 2. PostgreSQL 설정
 ```bash
-# Homebrew로 MySQL 설치 (macOS)
-brew install mysql
-brew services start mysql
+# Homebrew로 PostgreSQL 설치 (macOS)
+brew install postgresql
+brew services start postgresql
 
-# MySQL 접속 후 데이터베이스 생성
-mysql -u root -p
+# PostgreSQL 접속 후 데이터베이스 생성
+psql -U postgres
 
-# database-schema.sql 실행
-mysql -u root -p < database-schema.sql
+# schema.sql 실행
+psql -U postgres -d demo_db < src/main/resources/schema.sql
 ```
 
 ### 3. 애플리케이션 실행

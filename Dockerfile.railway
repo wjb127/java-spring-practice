@@ -1,4 +1,4 @@
-# Render 배포용 Dockerfile (MySQL + PostgreSQL 지원)
+# Render 배포용 Dockerfile (PostgreSQL 지원)
 FROM ubuntu:22.04
 
 # 시간대 설정 (interactive 모드 방지)
@@ -38,7 +38,7 @@ if [ -n "$DATABASE_URL" ]; then\n\
   echo "🔄 PostgreSQL 설정 적용됨 (Render)"\n\
   echo "📊 PostgreSQL 스키마 준비 완료"\n\
 else\n\
-  echo "📦 MySQL 설정 사용 (로컬)"\n\
+  echo "📦 PostgreSQL 설정 사용 (로컬)"\n\
 fi\n\
 exec "$@"' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 

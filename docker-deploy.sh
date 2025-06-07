@@ -5,7 +5,7 @@ echo "=========================="
 
 # Docker Hub 사용자명 (실제 사용시 변경 필요)
 DOCKER_USERNAME="wjb127"
-IMAGE_NAME="spring-mybatis-mysql-app"
+IMAGE_NAME="spring-mybatis-postgres-app"
 VERSION="latest"
 
 echo "📦 Docker 이미지 빌드 중..."

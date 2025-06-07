@@ -11,16 +11,16 @@ restartPolicyType = "on_failure"
 # 환경 변수 설정 가이드
 # Railway 대시보드에서 다음 환경변수들을 설정해야 합니다:
 # 
-# 1. MySQL 플러그인 추가 후:
-#    - DB_HOST=${{MySQL.MYSQL_URL}} (또는 MYSQLHOST)
-#    - DB_PORT=${{MySQL.MYSQL_PORT}} (기본값: 3306)  
-#    - DB_NAME=${{MySQL.MYSQL_DATABASE}}
-#    - DB_USERNAME=${{MySQL.MYSQL_USER}}
-#    - DB_PASSWORD=${{MySQL.MYSQL_PASSWORD}}
+# 1. PostgreSQL 플러그인 추가 후:
+#    - DB_HOST=${{Postgres.PGHOST}}
+#    - DB_PORT=${{Postgres.PGPORT}} (기본값: 5432)  
+#    - DB_NAME=${{Postgres.PGDATABASE}}
+#    - DB_USERNAME=${{Postgres.PGUSER}}
+#    - DB_PASSWORD=${{Postgres.PGPASSWORD}}
 #
 # 2. 수동 설정시:
-#    - DB_HOST=your-mysql-host
-#    - DB_PORT=3306
+#    - DB_HOST=your-postgres-host
+#    - DB_PORT=5432
 #    - DB_NAME=demo_db
 #    - DB_USERNAME=your-username
 #    - DB_PASSWORD=your-password
@@ -29,4 +29,4 @@ restartPolicyType = "on_failure"
 name = "spring-app"
 
 [[services]]
-name = "mysql" 
+name = "postgres" 

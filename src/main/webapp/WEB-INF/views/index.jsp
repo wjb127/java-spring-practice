@@ -35,7 +35,7 @@
             <h1 class="display-4 fw-bold mb-4">
                 <i class="fas fa-rocket me-3"></i>${message}
             </h1>
-            <p class="lead mb-5">Spring Framework + MyBatis + MySQL을 활용한 웹 애플리케이션</p>
+            <p class="lead mb-5">Spring Framework + MyBatis + PostgreSQL을 활용한 웹 애플리케이션</p>
             <div class="d-flex justify-content-center gap-3">
                 <a href="/users" class="btn btn-light btn-lg">
                     <i class="fas fa-users me-2"></i>사용자 관리 시스템
@@ -172,7 +172,7 @@
                     </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled">
-                            <li class="mb-2"><i class="fas fa-database text-primary me-2"></i><strong>MySQL 8.0</strong></li>
+                            <li class="mb-2"><i class="fas fa-database text-primary me-2"></i><strong>PostgreSQL</strong></li>
                             <li class="mb-2"><i class="fas fa-swimming-pool text-warning me-2"></i><strong>HikariCP</strong></li>
                             <li class="mb-2"><i class="fas fa-server text-secondary me-2"></i><strong>Apache Tomcat</strong></li>
                         </ul>
@@ -203,7 +203,7 @@
         <div class="container">
             <p class="mb-2">
                 <i class="fas fa-heart text-danger me-1"></i>
-                Spring MVC + MyBatis + MySQL 데모 애플리케이션
+                Spring MVC + MyBatis + PostgreSQL 데모 애플리케이션
             </p>
             <p class="mb-0 text-muted">Powered by Spring Framework</p>
         </div>

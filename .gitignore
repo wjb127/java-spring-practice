@@ -67,3 +67,17 @@ hs_err_pid*
 
 # Docker
 .dockerignore 
+
+# Environment Variables (민감한 정보 보호)
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# Database & Security
+application-prod.properties
+application-local.properties
+database-prod.properties
+src/main/resources/application-prod.yml
+src/main/resources/application-local.yml
