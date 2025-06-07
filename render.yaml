@@ -1,9 +1,12 @@
 services:
-  # Spring 애플리케이션
+  # Spring 애플리케이션 (무료 플랜)
   - type: web
     name: spring-app
     env: docker
     dockerfilePath: ./Dockerfile.railway
+    plan: free  # 🔥 무료 웹 서비스 플랜 추가!
+    buildCommand: ""  # Docker 빌드 사용
+    startCommand: ""  # Dockerfile의 CMD 사용
     envVars:
       - key: DB_HOST
         fromDatabase:
@@ -27,7 +30,7 @@ services:
           property: password
 
 databases:
-  # PostgreSQL 데이터베이스 (Render 공식 지원)
+  # PostgreSQL 데이터베이스 (무료 플랜)
   - name: postgres-db
     databaseName: demo_db
     user: spring_user
