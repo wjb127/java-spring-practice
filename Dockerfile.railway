@@ -1,4 +1,4 @@
-# Railway 배포용 Dockerfile
+# Render 배포용 Dockerfile (MySQL + PostgreSQL 지원)
 FROM ubuntu:22.04
 
 # 시간대 설정 (interactive 모드 방지)
@@ -25,9 +25,23 @@ RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | hea
 RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
     mvn clean package -DskipTests
 
-# 포트 노출 (Railway는 동적 포트 할당)
+# 포트 노출 (Render는 동적 포트 할당)
 EXPOSE $PORT
 
-# 애플리케이션 실행 (Railway 환경변수와 함께)
+# Render PostgreSQL 환경변수 자동 설정 스크립트
+RUN echo '#!/bin/bash\n\
+# Render PostgreSQL 자동 설정\n\
+if [ -n "$DATABASE_URL" ]; then\n\
+  export DB_DRIVER="org.postgresql.Driver"\n\
+  export DB_URL="$DATABASE_URL"\n\
+  export DB_VALIDATION_QUERY="SELECT 1"\n\
+  echo "🔄 PostgreSQL 설정 적용됨 (Render)"\n\
+else\n\
+  echo "📦 MySQL 설정 사용 (로컬)"\n\
+fi\n\
+exec "$@"' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
+# 애플리케이션 실행 (환경 자동 감지)
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
-    mvn jetty:run -Djetty.http.port=$PORT -Djetty.http.host=0.0.0.0 
+    mvn jetty:run -Djetty.http.port=$PORT -Djetty.host=0.0.0.0 

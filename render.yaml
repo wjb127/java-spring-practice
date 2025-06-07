@@ -7,28 +7,28 @@ services:
     envVars:
       - key: DB_HOST
         fromDatabase:
-          name: mysql-db
+          name: postgres-db
           property: host
       - key: DB_PORT
         fromDatabase:
-          name: mysql-db
+          name: postgres-db
           property: port
       - key: DB_NAME
         fromDatabase:
-          name: mysql-db
+          name: postgres-db
           property: database
       - key: DB_USERNAME
         fromDatabase:
-          name: mysql-db
+          name: postgres-db
           property: user
       - key: DB_PASSWORD
         fromDatabase:
-          name: mysql-db
+          name: postgres-db
           property: password
 
-  # MySQL 데이터베이스
-  - type: database
-    name: mysql-db
+databases:
+  # PostgreSQL 데이터베이스 (Render 공식 지원)
+  - name: postgres-db
     databaseName: demo_db
     user: spring_user
-    plan: starter  # 무료 플랜 
+    plan: free  # 무료 PostgreSQL 
