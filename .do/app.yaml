@@ -1,0 +1,37 @@
+name: spring-mybatis-demo
+services:
+- name: spring-app
+  source_dir: /
+  github:
+    repo: wjb127/java-spring-practice
+    branch: main
+  dockerfile_path: Dockerfile.railway
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  envs:
+  - key: DB_HOST
+    scope: RUN_TIME
+    type: SECRET
+    value: ${mysql-db.HOSTNAME}
+  - key: DB_PORT
+    scope: RUN_TIME
+    value: ${mysql-db.PORT}
+  - key: DB_NAME
+    scope: RUN_TIME
+    value: ${mysql-db.DATABASE}
+  - key: DB_USERNAME
+    scope: RUN_TIME
+    value: ${mysql-db.USERNAME}
+  - key: DB_PASSWORD
+    scope: RUN_TIME
+    type: SECRET
+    value: ${mysql-db.PASSWORD}
+
+databases:
+- name: mysql-db
+  engine: MYSQL
+  size: db-s-1vcpu-1gb
+  version: "8" 

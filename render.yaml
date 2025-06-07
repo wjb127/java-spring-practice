@@ -1,0 +1,34 @@
+services:
+  # Spring 애플리케이션
+  - type: web
+    name: spring-app
+    env: docker
+    dockerfilePath: ./Dockerfile.railway
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: mysql-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: mysql-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: mysql-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: mysql-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: mysql-db
+          property: password
+
+  # MySQL 데이터베이스
+  - type: database
+    name: mysql-db
+    databaseName: demo_db
+    user: spring_user
+    plan: starter  # 무료 플랜 

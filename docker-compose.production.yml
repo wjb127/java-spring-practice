@@ -1,0 +1,63 @@
+# 프로덕션용 Docker Compose - 어디서든 배포 가능!
+version: '3.8'
+
+services:
+  spring-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.railway
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_NAME=${MYSQL_DATABASE:-demo_db}
+      - DB_USERNAME=${MYSQL_USER:-spring_user}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=production
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - spring-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mysql-db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-demo_db}
+      MYSQL_USER: ${MYSQL_USER:-spring_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/main/resources/sql:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - spring-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  spring-network:
+    driver: bridge
+
+# 사용법:
+# 1. .env 파일 생성 후 환경변수 설정
+# 2. docker-compose -f docker-compose.production.yml up -d
+# 3. 모든 클라우드 플랫폼에서 실행 가능! 
