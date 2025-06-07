@@ -1,38 +1,31 @@
-# 멀티 스테이지 빌드를 사용하여 효율적인 이미지 생성
-FROM maven:3.9.6-eclipse-temurin-17 AS builder
+# Ubuntu 기반 Java 17 이미지 사용
+FROM ubuntu:22.04
+
+# 시간대 설정 (interactive 모드 방지)
+ENV DEBIAN_FRONTEND=noninteractive
 
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# Maven 의존성 캐싱을 위해 pom.xml을 먼저 복사
-COPY pom.xml .
-
-# 의존성 다운로드 (캐시 활용)
-RUN mvn dependency:go-offline -B
-
-# 소스 코드 복사
-COPY src ./src
-
-# 애플리케이션 빌드
-RUN mvn clean package -DskipTests
-
-# 실행 환경
-FROM eclipse-temurin:17-jdk-slim
-
-# 작업 디렉토리 설정
-WORKDIR /app
-
-# Maven 설치 (Jetty 플러그인 실행용)
+# Java 17 및 Maven 설치
 RUN apt-get update && \
-    apt-get install -y maven && \
+    apt-get install -y openjdk-17-jdk maven && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# 빌드된 프로젝트 전체 복사 (Jetty 플러그인 실행을 위해)
-COPY --from=builder /app /app
+# 프로젝트 복사
+COPY . .
+
+# Java 환경변수를 찾아서 설정하고 Maven 실행
+RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
+    echo "JAVA_HOME is: $JAVA_HOME" && \
+    mvn dependency:go-offline -B
+
+RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
+    mvn clean package -DskipTests
 
 # 포트 노출
 EXPOSE 8080
 
-# 애플리케이션 실행
-CMD ["mvn", "jetty:run"] 
+# 애플리케이션 실행 (환경변수 설정과 함께)
+CMD export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && mvn jetty:run 
