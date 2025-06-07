@@ -63,4 +63,7 @@ coverage
 *.rar
 
 # Virtual machine crash logs
-hs_err_pid* 
+hs_err_pid*
+
+# Docker
+.dockerignore 

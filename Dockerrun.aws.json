@@ -1,0 +1,61 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "spring-app",
+      "image": "spring-mybatis-app",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "links": ["mysql"],
+      "environment": [
+        {
+          "name": "DB_HOST",
+          "value": "mysql"
+        },
+        {
+          "name": "DB_PORT", 
+          "value": "3306"
+        },
+        {
+          "name": "DB_NAME",
+          "value": "demo_db"
+        }
+      ]
+    },
+    {
+      "name": "mysql",
+      "image": "mysql:8.0",
+      "essential": true,
+      "memory": 512,
+      "environment": [
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "value": "1234"
+        },
+        {
+          "name": "MYSQL_DATABASE",
+          "value": "demo_db"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "mysql-data",
+          "containerPath": "/var/lib/mysql"
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "mysql-data",
+      "host": {}
+    }
+  ]
+} 

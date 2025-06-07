@@ -20,7 +20,10 @@
     </context:component-scan>
 
     <!-- Property Placeholder -->
-    <context:property-placeholder location="classpath:config/database.properties"/>
+    <context:property-placeholder 
+        location="classpath:config/database.properties" 
+        system-properties-mode="OVERRIDE"
+        ignore-unresolvable="true"/>
 
     <!-- DataSource Configuration -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

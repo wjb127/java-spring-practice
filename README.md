@@ -39,6 +39,42 @@ Java Spring Framework를 사용한 웹 기반 사용자 관리 시스템입니�
 
 ## 🔧 설치 및 실행
 
+### 🐳 Docker로 실행 (권장)
+
+가장 간단한 방법으로 모든 의존성이 자동으로 설정됩니다.
+
+```bash
+# 1. 프로젝트 클론
+git clone https://github.com/wjb127/java-spring-practice.git
+cd java-spring-practice
+
+# 2. Docker Compose로 실행
+./docker-run.sh
+
+# 또는 수동으로 실행
+docker-compose up --build
+```
+
+**접속 정보:**
+- **애플리케이션**: http://localhost:8080
+- **사용자 관리**: http://localhost:8080/users  
+- **REST API**: http://localhost:8080/api/users
+- **MySQL**: localhost:3307 (root/1234)
+
+**Docker 명령어:**
+```bash
+# 서비스 중지
+docker-compose down
+
+# 로그 확인
+docker-compose logs -f
+
+# 데이터 초기화 (볼륨 삭제)
+docker-compose down -v
+```
+
+### 🛠️ 로컬 환경에서 실행
+
 ### 1. 프로젝트 클론
 ```bash
 git clone https://github.com/wjb127/java-spring-practice.git
