@@ -51,6 +51,11 @@
     <!-- MyBatis Mapper Scan -->
     <mybatis-spring:scan base-package="com.example.demo.mapper"/>
 
+    <!-- JdbcTemplate for Database Initialization -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <!-- Transaction Manager -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
