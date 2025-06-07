@@ -1,5 +1,5 @@
 # 멀티 스테이지 빌드를 사용하여 효율적인 이미지 생성
-FROM maven:3.9.4-openjdk-17 AS builder
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # 실행 환경
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-slim
 
 # 작업 디렉토리 설정
 WORKDIR /app
