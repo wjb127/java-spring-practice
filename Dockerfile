@@ -24,46 +24,47 @@ RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | hea
 RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
     mvn clean package -DskipTests
 
-# Entrypoint 스크립트 생성 (Render DATABASE_URL 파싱)
+# 환경변수 기본값 설정 (Render에서 override됨)
+ENV DB_DRIVER=com.mysql.cj.jdbc.Driver
+ENV DB_URL=jdbc:mysql://localhost:3306/demo_db
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=1234
+ENV DB_VALIDATION_QUERY="SELECT 1"
+
+# Render PostgreSQL 감지 및 자동 설정 스크립트
 RUN echo '#!/bin/bash\n\
+echo "🚀 애플리케이션 시작..."\n\
+\n\
+# DATABASE_URL이 있으면 PostgreSQL 설정으로 변경\n\
 if [ -n "$DATABASE_URL" ]; then\n\
-  echo "🔄 DATABASE_URL 감지됨: $DATABASE_URL"\n\
+  echo "🔄 Render DATABASE_URL 감지: $DATABASE_URL"\n\
   \n\
-  # PostgreSQL URL 파싱: postgresql://user:pass@host:port/dbname\n\
+  # PostgreSQL 환경변수 강제 설정\n\
   export DB_DRIVER="org.postgresql.Driver"\n\
-  export DB_URL="jdbc:$DATABASE_URL"\n\
-  \n\
-  # URL에서 개별 정보 파싱\n\
-  PARSED_URL=$(echo $DATABASE_URL | sed "s/postgresql:\\/\\///g")\n\
-  USER_PASS=$(echo $PARSED_URL | cut -d"@" -f1)\n\
-  HOST_PORT_DB=$(echo $PARSED_URL | cut -d"@" -f2)\n\
-  \n\
-  export DB_USERNAME=$(echo $USER_PASS | cut -d":" -f1)\n\
-  export DB_PASSWORD=$(echo $USER_PASS | cut -d":" -f2)\n\
-  \n\
-  HOST_PORT=$(echo $HOST_PORT_DB | cut -d"/" -f1)\n\
-  export DB_HOST=$(echo $HOST_PORT | cut -d":" -f1)\n\
-  export DB_PORT=$(echo $HOST_PORT | cut -d":" -f2)\n\
-  export DB_NAME=$(echo $HOST_PORT_DB | cut -d"/" -f2)\n\
-  \n\
+  export DB_URL="$DATABASE_URL"\n\
+  export DB_USERNAME="spring_user"\n\
+  export DB_PASSWORD="$(echo $DATABASE_URL | sed -n '"'"'s/.*:\([^@]*\)@.*/\1/p'"'"')"\n\
   export DB_VALIDATION_QUERY="SELECT 1"\n\
   \n\
   echo "✅ PostgreSQL 설정 완료:"\n\
-  echo "   - 드라이버: $DB_DRIVER"\n\
-  echo "   - 호스트: $DB_HOST:$DB_PORT"\n\
-  echo "   - 데이터베이스: $DB_NAME"\n\
-  echo "   - 사용자: $DB_USERNAME"\n\
+  echo "   - Driver: $DB_DRIVER"\n\
+  echo "   - URL: $DB_URL"\n\
+  echo "   - User: $DB_USERNAME"\n\
 else\n\
   echo "📦 로컬 MySQL 설정 사용"\n\
 fi\n\
 \n\
+# Java 실행\n\
 export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1)\n\
 echo "☕ JAVA_HOME: $JAVA_HOME"\n\
 \n\
-exec mvn jetty:run' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+exec "$@"' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 # 포트 노출
 EXPOSE 8080
 
-# Entrypoint 실행
-ENTRYPOINT ["/app/entrypoint.sh"] 
+# Entrypoint 설정
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+# WAR 파일 실행 (Jetty 내장)
+CMD ["java", "-Dspring.profiles.active=production", "-jar", "target/spring-mybatis-demo.war"] 
