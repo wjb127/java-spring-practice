@@ -13,7 +13,7 @@ public class HomeController {
      */
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("message", "Spring MVC + MyBatis + MySQL 데모 애플리케이션");
+        model.addAttribute("message", "Spring MVC + MyBatis + PostgreSQL 데모 애플리케이션");
         return "index";
     }
 

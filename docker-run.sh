@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "🐳 Spring MVC + MyBatis + MySQL Docker 실행"
+echo "🐳 Spring MVC + MyBatis + PostgreSQL Docker 실행"
 echo "====================================="
 
 # Docker Compose 실행
 echo "📦 Docker 컨테이너 시작 중..."
-docker-compose up --build -d
+docker-compose up -d
 
-echo "⏳ MySQL 데이터베이스 초기화 대기 중..."
+echo "⏳ PostgreSQL 데이터베이스 초기화 대기 중..."
 sleep 10
 
 echo "✅ 서비스가 시작되었습니다!"
@@ -16,7 +16,7 @@ echo "🌐 접속 정보:"
 echo "   - 애플리케이션: http://localhost:8080"
 echo "   - 사용자 관리: http://localhost:8080/users"
 echo "   - REST API: http://localhost:8080/api/users"
-echo "   - MySQL: localhost:3307 (root/1234)"
+echo "   - PostgreSQL: localhost:5432 (postgres/password)"
 echo ""
 echo "📋 유용한 명령어:"
 echo "   - 로그 보기: docker-compose logs -f"

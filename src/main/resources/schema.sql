@@ -1,10 +1,10 @@
 -- PostgreSQL Schema for Spring MyBatis Demo
--- Render PostgreSQL 환경을 위한 스키마
+-- 로컬 및 클라우드 환경 모두 사용
 
--- 기존 테이블이 있다면 삭제
+-- 기존 테이블 삭제 (있다면)
 DROP TABLE IF EXISTS users CASCADE;
 
--- PostgreSQL 시퀀스 생성 (AUTO_INCREMENT 대신)
+-- 시퀀스 생성 (PostgreSQL AUTO_INCREMENT 대체)
 DROP SEQUENCE IF EXISTS users_id_seq CASCADE;
 CREATE SEQUENCE users_id_seq START WITH 1 INCREMENT BY 1;
 
@@ -34,19 +34,20 @@ CREATE TRIGGER update_users_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
+-- 인덱스 생성
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_created_at ON users(created_at);
+
 -- 샘플 데이터 삽입
-INSERT INTO users (name, email, age) VALUES 
+INSERT INTO users (name, email, age) VALUES
 ('홍길동', 'hong@example.com', 30),
 ('김철수', 'kim@example.com', 25),
 ('이영희', 'lee@example.com', 28),
 ('박민수', 'park@example.com', 35),
-('정수진', 'jung@example.com', 32);
+('정수진', 'jung@example.com', 32),
+('최현우', 'choi@example.com', 29),
+('강지민', 'kang@example.com', 27);
 
--- 인덱스 생성
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_created_at ON users(created_at DESC);
-
--- 권한 설정 (Render 환경에서 필요할 수 있음)
--- 시퀀스 사용 권한
-GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO PUBLIC;
-GRANT ALL PRIVILEGES ON TABLE users TO PUBLIC; 
+-- 데이터 확인
+SELECT COUNT(*) as total_users FROM users;
+SELECT * FROM users ORDER BY created_at DESC LIMIT 5; 

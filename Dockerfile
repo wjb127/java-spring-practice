@@ -24,11 +24,11 @@ RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | hea
 RUN export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
     mvn clean package -DskipTests
 
-# 환경변수 기본값 설정 (Render에서 override됨)
-ENV DB_DRIVER=com.mysql.cj.jdbc.Driver
-ENV DB_URL=jdbc:mysql://localhost:3306/demo_db
-ENV DB_USERNAME=root
-ENV DB_PASSWORD=1234
+# PostgreSQL 환경변수 기본값 설정
+ENV DB_DRIVER=org.postgresql.Driver
+ENV DB_URL=jdbc:postgresql://localhost:5432/demo_db
+ENV DB_USERNAME=postgres
+ENV DB_PASSWORD=password
 ENV DB_VALIDATION_QUERY="SELECT 1"
 
 # Render PostgreSQL 감지 및 자동 설정 스크립트
@@ -67,4 +67,7 @@ EXPOSE 8080
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 # WAR 파일 실행 (Jetty 내장)
-CMD ["java", "-Dspring.profiles.active=production", "-jar", "target/spring-mybatis-demo.war"] 
+CMD export JAVA_HOME=$(find /usr/lib/jvm -name "java-17-openjdk-*" -type d | head -1) && \
+    echo "🚀 Starting Spring Boot Application with PostgreSQL..." && \
+    echo "📊 Database: $DB_URL" && \
+    java -jar target/spring-mybatis-demo.war 
