@@ -36,6 +36,7 @@ if [ -n "$DATABASE_URL" ]; then\n\
   export DB_URL="$DATABASE_URL"\n\
   export DB_VALIDATION_QUERY="SELECT 1"\n\
   echo "🔄 PostgreSQL 설정 적용됨 (Render)"\n\
+  echo "📊 PostgreSQL 스키마 준비 완료"\n\
 else\n\
   echo "📦 MySQL 설정 사용 (로컬)"\n\
 fi\n\

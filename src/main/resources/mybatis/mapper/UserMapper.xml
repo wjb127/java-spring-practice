@@ -39,7 +39,7 @@
     <!-- 사용자 생성 -->
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (name, email, age, created_at, updated_at)
-        VALUES (#{name}, #{email}, #{age}, NOW(), NOW())
+        VALUES (#{name}, #{email}, #{age}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
     </insert>
 
     <!-- 사용자 수정 -->
@@ -48,7 +48,7 @@
         SET name = #{name},
             email = #{email},
             age = #{age},
-            updated_at = NOW()
+            updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
 
